@@ -1,8 +1,10 @@
 (ns gobook.latex.output
-  (:require [gobook.latex.generator :as lg]))
+  (:require [gobook.latex.generator :as lg]
+            [me.raynes.conch        :as conch :refer [programs]]
+            [clojure.java.io        :refer [writer]]))
 
 (defn make-doc [& content]
-  [[:documentclass [:book :a5paper]]
+  [[:documentclass [:article :a4paper]]
    [:usepackage [:psgo]]
    (into [:document []]
          content)])
@@ -10,3 +12,18 @@
 (defn output-latex [& content]
   (apply lg/render-doc
          (apply make-doc content)))
+
+(programs xelatex)
+
+(def outfile "output/test.tex")
+
+(defn render-to-pdf [& content]
+  (with-open [outstream (writer outfile)]
+    (binding [*out* outstream]
+      (apply output-latex content)))
+  (xelatex "-output-directory=./output" outfile))
+
+(def t [:psgoboard []
+        [:stone [:white :a 1]]
+        [:stone [:black :b 2]]
+        [:stone [:white :c 3]]])
