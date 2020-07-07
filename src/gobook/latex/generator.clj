@@ -65,7 +65,8 @@
 (def commands
   {:documentclass 1
    :usepackage    1
-   :stone         3})
+   :stone         3
+   :move          2})
 
 (def render-fns
   (into {}
