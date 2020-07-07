@@ -13,7 +13,7 @@
   (apply lg/render-doc
          (apply make-doc content)))
 
-(programs xelatex)
+(programs latexmk)
 
 (def outfile "output/test.tex")
 
@@ -21,7 +21,7 @@
   (with-open [outstream (writer outfile)]
     (binding [*out* outstream]
       (apply output-latex content)))
-  (xelatex "-output-directory=./output" outfile))
+  (latexmk "-pdfps" "-output-directory=./output" outfile))
 
 (def t [:psgoboard []
         [:stone [:white :a 1]]
