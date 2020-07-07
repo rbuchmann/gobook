@@ -76,8 +76,9 @@
            [k (cmd-fn k v)]))))
 
 (defn render-node [[tag args & children]]
-  (let [renderer (render-fns tag)]
-    (renderer args children)))
+  (if-let [renderer (render-fns tag)]
+    (renderer args children)
+    (throw (RuntimeException. (format "No renderer for tag %s" tag)))))
 
 (defn render-doc [& nodes]
   (doseq [node nodes]
