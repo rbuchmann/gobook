@@ -97,3 +97,9 @@ prop = <ws> prop-name <ws> prop-value*
 (defn transform-result [tree]
   (let [[_ root] tree]
     (transform-branch root)))
+
+
+(defn parse-sgf [sgf-string]
+  (-> sgf-string
+      sgf-parser
+      transform-result))
