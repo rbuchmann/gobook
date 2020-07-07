@@ -6,14 +6,14 @@ RU[Japanese]SZ[19]KM[0.00]
 ;W[]
 (;B[sc]
 ;W[sb]
-;B[ra])
+;B[ra]C[Variation 1])
 (;B[ra]
 ;W[sc])
 (;B[cb]
 (;W[bb]
 ;B[ac]
 ;W[ab]
-;B[ba])
+;B[ba]C[Variation 2])
 (;W[ba]
 ;B[ab]
 ;W[ac]
@@ -131,4 +131,4 @@ RU[Japanese]SZ[19]KM[0.00]
 ;W[rb]
 ;B[sc]
 ;W[sb]
-;B[ra])))
+;B[ra]C[Long variation])))
