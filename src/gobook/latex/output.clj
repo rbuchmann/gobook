@@ -15,7 +15,7 @@
 
 (programs latexmk)
 
-(def outfile "output/test.tex")
+(def outfile "./output/test.tex")
 
 (defn render-to-pdf [& content]
   (with-open [outstream (writer outfile)]

@@ -38,22 +38,21 @@
    (range)
    [\a \b \c \d \e \f \g \h \j \k \l \m \n \o \p \q \r \s \t]))
 
-(defn flatten-node [v]
-  (let [{:keys [black-move white-move
-                add-white add-black]} v
-        move (or black-move white-move)]
-    (concat
-     (map (fn [[x y]] [:stone [:black (coords->char x) (inc y)]])
-          add-black)
-     (map (fn [[x y]] [:stone [:white (coords->char x) (inc y)]])
-          add-white)
-     (map (fn [[x y]] [:move [(coords-to-char x) (inc y)]])
-          (when (and move (not= :pass move))
-            [move])))))
+(defn to-psgoboard [v]
+  (let [{:keys [stones moves]} (:variation v)]
+    (into [:psgoboard []]
+          (concat
+           (map (fn [[[x y] color]] [:stone [color (coords->char x) (inc y)]])
+                stones)
+           (map (fn [[[x y] color]] [:move [(coords->char x) (inc y)]])
+                moves)))))
 
 (defn latexize-variation [v]
   (->> v
-       (mapcat flatten-node)
-       (into
-        [:psgoboard []])
-       (lo/render-to-pdf)))
+       (map to-psgoboard)
+       (apply lo/render-to-pdf)))
+
+(defn latexize-book [edn]
+  (latexize-variation (:content edn)))
+
+(def tp (clojure.edn/read-string (slurp "testdata/book.edn")))
