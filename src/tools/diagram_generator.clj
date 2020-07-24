@@ -39,13 +39,16 @@
    [\a \b \c \d \e \f \g \h \j \k \l \m \n \o \p \q \r \s \t]))
 
 (defn to-psgoboard [v]
-  (let [{:keys [stones moves]} (:variation v)]
-    (into [:psgoboard []]
-          (concat
-           (map (fn [[[x y] color]] [:stone [color (coords->char x) (inc y)]])
-                stones)
-           (map (fn [[[x y] color]] [:move [(coords->char x) (inc y)]])
-                moves)))))
+  (let [{:keys [stones moves comments]} (:variation v)]
+    [:minipage ["0.5\\textwidth" :t]
+     [:setcounter [:gomove 0]]
+     (into [:psgoboard* []]
+           (concat
+            (map (fn [[[x y] color]] [:stone [color (coords->char x) (inc y)]])
+                 stones)
+            (map (fn [[[x y] color]] [:move [(coords->char x) (inc y)]])
+                 moves)))
+     (or comments "")]))
 
 (defn latexize-variation [v]
   (->> v

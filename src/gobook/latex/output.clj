@@ -4,9 +4,10 @@
             [clojure.java.io        :refer [writer]]))
 
 (defn make-doc [& content]
-  [[:documentclass [:article :a4paper]]
+  [[:documentclass [:book :a4paper]]
    [:usepackage [:psgo]]
-   (into [:document []]
+   (into [:document []
+          [:setgounit ["0.3cm"]]]
          content)])
 
 (defn output-latex [& content]

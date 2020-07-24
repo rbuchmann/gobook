@@ -17,7 +17,9 @@
 ;; String generation helpers
 
 (defn outln [s & args]
-  (print (str (padding *indentation*)) (apply format s args) \newline))
+  (let [out (apply format s args)]
+    (when-not (str/blank? out)
+      (print (str (padding *indentation*)) out \newline))))
 
 (defn in-brackets [s]
   (when (not-empty s)
@@ -59,14 +61,18 @@
 ;; Render functions
 
 (def environments
-  {:document  0
-   :psgoboard 0})
+  {:document   0
+   :psgoboard  0
+   :psgoboard* 0
+   :minipage   1})
 
 (def commands
   {:documentclass 1
    :usepackage    1
-   :stone         3
-   :move          2})
+   :setgounit     1
+   :move          2
+   :setcounter    2
+   :stone         3})
 
 (def render-fns
   (into {}
@@ -76,10 +82,13 @@
          (for [[k v] commands]
            [k (cmd-fn k v)]))))
 
-(defn render-node [[tag args & children]]
-  (if-let [renderer (render-fns tag)]
-    (renderer args children)
-    (throw (RuntimeException. (format "No renderer for tag %s" tag)))))
+(defn render-node [node]
+  (if (string? node)
+    (outln node)
+    (let [[tag args & children] node]
+      (if-let [renderer (render-fns tag)]
+        (renderer args children)
+        (throw (RuntimeException. (format "No renderer for tag %s" tag)))))))
 
 (defn render-doc [& nodes]
   (doseq [node nodes]
